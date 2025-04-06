@@ -7,23 +7,43 @@ import (
 )
 
 func TestGetPagination(t *testing.T) {
-	basicTests := []struct {
-		currentPage int
-		totalPages  int
-		expected    string
-	}{
-		{1, 1, "(1)"},
-		{2, 5, "1 (2) 3 4 5"},
-		{1, 7, "(1) 2 3 4 5 6 7"},
-		{3, 7, "1 2 (3) 4 5 6 7"},
-		{7, 7, "1 2 3 4 5 6 (7)"},
-	}
-
-	for _, testCase := range basicTests {
-		actual := pagination.GetPagination(testCase.currentPage, testCase.totalPages)
-
-		if actual != testCase.expected {
-			t.Errorf("GetPagination(%d, %d) returned %q, expected %q", testCase.currentPage, testCase.totalPages, actual, testCase.expected)
+	t.Run("total pages less than or equal to 7", func(t *testing.T) {
+		basicTests := []struct {
+			currentPage int
+			totalPages  int
+			expected    string
+		}{
+			{1, 1, "(1)"},
+			{2, 5, "1 (2) 3 4 5"},
+			{1, 7, "(1) 2 3 4 5 6 7"},
+			{3, 7, "1 2 (3) 4 5 6 7"},
+			{7, 7, "1 2 3 4 5 6 (7)"},
 		}
-	}
+
+		for _, testCase := range basicTests {
+			actual := pagination.GetPagination(testCase.currentPage, testCase.totalPages)
+
+			if actual != testCase.expected {
+				t.Errorf("GetPagination(%d, %d) returned %q, expected %q", testCase.currentPage, testCase.totalPages, actual, testCase.expected)
+			}
+		}
+	})
+
+	t.Run("with ellipsis left and right", func(t *testing.T) {
+		testsWithEllipsis := []struct {
+			currentPage int
+			totalPages  int
+			expected    string
+		}{
+			{42, 100, "1 ... 41 (42) 43 ... 100"},
+		}
+
+		for _, testCase := range testsWithEllipsis {
+			actual := pagination.GetPagination(testCase.currentPage, testCase.totalPages)
+
+			if actual != testCase.expected {
+				t.Errorf("GetPagination(%d, %d) returned %q, expected %q", testCase.currentPage, testCase.totalPages, actual, testCase.expected)
+			}
+		}
+	})
 }
