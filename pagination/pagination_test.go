@@ -13,6 +13,7 @@ func TestGetPagination(t *testing.T) {
 		expected    string
 	}{
 		{2, 5, "1 (2) 3 4 5"},
+		{3, 7, "1 2 (3) 4 5 6 7"},
 	}
 
 	for _, testCase := range basicTests {
