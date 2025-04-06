@@ -18,7 +18,7 @@ func GetPagination(currentPage int, totalPages int) string {
 			pagination = append(pagination, strconv.Itoa(page))
 		}
 	} else {
-		return "1 ... 41 (42) 43 ... 100"
+		return fmt.Sprintf("1 ... %d (%d) %d ... %d", currentPage-1, currentPage, currentPage+1, totalPages)
 	}
 
 	return strings.Join(pagination, " ")

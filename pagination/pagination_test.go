@@ -35,6 +35,7 @@ func TestGetPagination(t *testing.T) {
 			totalPages  int
 			expected    string
 		}{
+			{5, 9, "1 ... 4 (5) 6 ... 9"},
 			{42, 100, "1 ... 41 (42) 43 ... 100"},
 		}
 
