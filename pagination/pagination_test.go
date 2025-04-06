@@ -29,12 +29,14 @@ func TestGetPagination(t *testing.T) {
 		}
 	})
 
-	t.Run("with ellipsis left and right", func(t *testing.T) {
+	t.Run("with ellipsis", func(t *testing.T) {
 		testsWithEllipsis := []struct {
 			currentPage int
 			totalPages  int
 			expected    string
 		}{
+			{1, 9, "(1) 2 3 4 5 ... 9"},
+			{4, 9, "1 2 3 (4) 5 ... 9"},
 			{5, 9, "1 ... 4 (5) 6 ... 9"},
 			{42, 100, "1 ... 41 (42) 43 ... 100"},
 		}
