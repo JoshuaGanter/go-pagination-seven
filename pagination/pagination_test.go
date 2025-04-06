@@ -7,13 +7,19 @@ import (
 )
 
 func TestGetPagination(t *testing.T) {
-	currentPage := 2
-	totalPages := 5
-	expected := "1 (2) 3 4 5"
+	basicTests := []struct {
+		currentPage int
+		totalPages  int
+		expected    string
+	}{
+		{2, 5, "1 (2) 3 4 5"},
+	}
 
-	actual := pagination.GetPagination(currentPage, totalPages)
+	for _, testCase := range basicTests {
+		actual := pagination.GetPagination(testCase.currentPage, testCase.totalPages)
 
-	if actual != expected {
-		t.Errorf("GetPagination(%d, %d) returned %q, expected %q", currentPage, totalPages, actual, expected)
+		if actual != testCase.expected {
+			t.Errorf("GetPagination(%d, %d) returned %q, expected %q", testCase.currentPage, testCase.totalPages, actual, testCase.expected)
+		}
 	}
 }
