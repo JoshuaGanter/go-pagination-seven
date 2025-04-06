@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/JoshuaGanter/go-pagination-seven/pagination"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetPagination(t *testing.T) {
@@ -21,11 +22,10 @@ func TestGetPagination(t *testing.T) {
 		}
 
 		for _, testCase := range basicTests {
-			actual := pagination.GetPagination(testCase.currentPage, testCase.totalPages)
+			actual, err := pagination.GetPagination(testCase.currentPage, testCase.totalPages)
 
-			if actual != testCase.expected {
-				t.Errorf("GetPagination(%d, %d) returned %q, expected %q", testCase.currentPage, testCase.totalPages, actual, testCase.expected)
-			}
+			assert.NoError(t, err)
+			assert.Equal(t, actual, testCase.expected)
 		}
 	})
 
@@ -46,11 +46,10 @@ func TestGetPagination(t *testing.T) {
 		}
 
 		for _, testCase := range testsWithEllipsis {
-			actual := pagination.GetPagination(testCase.currentPage, testCase.totalPages)
+			actual, err := pagination.GetPagination(testCase.currentPage, testCase.totalPages)
 
-			if actual != testCase.expected {
-				t.Errorf("GetPagination(%d, %d) returned %q, expected %q", testCase.currentPage, testCase.totalPages, actual, testCase.expected)
-			}
+			assert.NoError(t, err)
+			assert.Equal(t, actual, testCase.expected)
 		}
 	})
 }
