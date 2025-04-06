@@ -19,6 +19,12 @@ func getPaginationRange(fromPage int, toPage int, currentPage int) []string {
 }
 
 func GetPagination(currentPage int, totalPages int) (string, error) {
+	if totalPages < 1 {
+		return "", fmt.Errorf("parameter %q must be greater than 0, actual: %d", "totalPages", totalPages)
+	}
+	if currentPage < 1 || currentPage > totalPages {
+		return "", fmt.Errorf("parameter %q must be in range [1..%d], actual: %d", "currentPage", totalPages, currentPage)
+	}
 
 	if totalPages <= 7 {
 		return strings.Join(getPaginationRange(1, totalPages, currentPage), " "), nil

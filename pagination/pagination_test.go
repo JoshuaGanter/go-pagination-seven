@@ -52,4 +52,25 @@ func TestGetPagination(t *testing.T) {
 			assert.Equal(t, actual, testCase.expected)
 		}
 	})
+
+	t.Run("errors out on invalid input", func(t *testing.T) {
+		testsWithErrors := []struct {
+			currentPage   int
+			totalPages    int
+			expectedError string
+		}{
+			{-1, -1, "parameter \"totalPages\" must be greater than 0, actual: -1"},
+			{1, -1, "parameter \"totalPages\" must be greater than 0, actual: -1"},
+			{1, 0, "parameter \"totalPages\" must be greater than 0, actual: 0"},
+			{-1, 9, "parameter \"currentPage\" must be in range [1..9], actual: -1"},
+			{0, 9, "parameter \"currentPage\" must be in range [1..9], actual: 0"},
+			{6, 5, "parameter \"currentPage\" must be in range [1..5], actual: 6"},
+			{42, 10, "parameter \"currentPage\" must be in range [1..10], actual: 42"},
+		}
+		for _, testCase := range testsWithErrors {
+			_, actualError := pagination.GetPagination(testCase.currentPage, testCase.totalPages)
+
+			assert.EqualError(t, actualError, testCase.expectedError)
+		}
+	})
 }
