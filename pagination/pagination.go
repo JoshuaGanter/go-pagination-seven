@@ -26,6 +26,15 @@ func GetPagination(currentPage int, totalPages int) string {
 			pagination = append(pagination, strconv.Itoa(page))
 		}
 		pagination = append(pagination, "...", strconv.Itoa(totalPages))
+	} else if totalPages-currentPage <= 3 {
+		pagination = append(pagination, "1", "...")
+		for page := totalPages - 4; page <= totalPages; page++ {
+			if page == currentPage {
+				pagination = append(pagination, fmt.Sprintf("(%d)", page))
+				continue
+			}
+			pagination = append(pagination, strconv.Itoa(page))
+		}
 	} else {
 		return fmt.Sprintf("1 ... %d (%d) %d ... %d", currentPage-1, currentPage, currentPage+1, totalPages)
 	}
